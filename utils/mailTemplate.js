@@ -91,4 +91,4 @@ const signUpTemplate =(verifyLink,firstName)=>{
     `
 }
 
-module.exports= signUpTemplate
+module.exports= {signUpTemplate}
