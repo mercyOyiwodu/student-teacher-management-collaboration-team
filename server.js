@@ -1,6 +1,7 @@
 const express = require('express')
 require('./cofig/database')
 
+
 const PORT = process.env.PORT || 7060
 
 const app = express()
