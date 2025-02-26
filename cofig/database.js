@@ -9,5 +9,6 @@ mongoose.connect(db)
 })
 .catch((error)=>{
     console.log('Error Connecting to database' + error.message);
+
     
 })
