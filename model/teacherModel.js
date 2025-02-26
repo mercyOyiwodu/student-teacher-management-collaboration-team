@@ -32,6 +32,11 @@ const teacherSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    mentor: {
+        types: String,
+        enum: ['Backend', 'Frontend', 'productDesign'],
+        require: 'true'
+    },
     
     studentId:[ {
         type: mongoose.SchemaTypes.ObjectId,
