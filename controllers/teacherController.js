@@ -1,6 +1,9 @@
 const studentModel = require('../model/studentModel');
 const teacherModel = require('../model/teacherModel');
-const bcrypt = require('bcrypt')
+const sendEmail = require('../middleware/nodemailer');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken')
+const signUpTemplate = require('../utils/mailTemplate')
 
 exports.registerTeacher = async (req, res) =>{
     try {
