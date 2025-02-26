@@ -18,6 +18,11 @@ const studentSchema = new mongoose.Schema({
         enum: ['Female','Male'],
         require: true
     },
+    stack:{
+        type: String,
+        enum: ['Backend','Frontend','Product-Design'],
+        require: true
+    },
     isVerified:{
         type: Boolean,
         default: false
@@ -28,7 +33,7 @@ const studentSchema = new mongoose.Schema({
 
     },
     isStudent:{
-        type: boolean,
+        type: Boolean,
         default: false
     },
     teacherId:{
