@@ -2,9 +2,9 @@ const { registerStudent, verifyStudentEmail, getStudentPersonalInfo } = require(
 
 const router = require('express').Router()
 
-router.post('/register',registerStudent)
-router.get('/verify-email/:token',verifyStudentEmail)
-router.get('/student-details',getStudentPersonalInfo)
+router.post('/students/register',registerStudent)
+router.get('/students/verify-email/:token',verifyStudentEmail)
+router.get('/students/student-details',getStudentPersonalInfo)
 
 
 
