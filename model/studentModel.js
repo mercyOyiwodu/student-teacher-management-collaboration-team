@@ -15,12 +15,12 @@ const studentSchema = new mongoose.Schema({
     },
     gender:{
         type: String,
-        enum: ['Female','Male'],
+        enum: ['female','male'],
         require: true
     },
     stack:{
         type: String,
-        enum: ['Backend','Frontend','Product-Design'],
+        enum: ['backend','frontend','product-design'],
         require: true
     },
     isVerified:{

@@ -6,10 +6,9 @@ const sendEmail =require('../middleware/nodemailer')
 
 exports.registerStudent= async(req,res)=>{
     try {
-        const { fullName, email, gender, password, stack } = req.body;
-        
-        const usernameExists = await studentModel.findOne({ userName: username.toLowerCase() });
-        if (usernameExists) {
+        const { fullName, email, gender, password, stack ,username} = req.body;
+        const emailExist = await studentModel.findOne({ email: email.toLowerCase() });
+        if (emailExist) {
             return res.status(480).json({
                 message: `Username has already been taken`
             })
@@ -24,9 +23,9 @@ exports.registerStudent= async(req,res)=>{
             username,
             stack
         });
-        const token = await jwt.sign({ studentId: student._id }, process.env.JWT_SECRET);
+        const token = jwt.sign({ studentId: student._id }, process.env.JWT_SECRET);
         const link = `${req.protocol}://${req.get('host')}/api/v1/user-verify/${token}`
-        const firstName = user.fullName.split(' ')[1]
+        const firstName = student.fullName.split(' ')[0]
         const html = signUpTemplate(link, firstName)
         const mailOptions = {
             subject: 'Welcome Email',
@@ -34,15 +33,15 @@ exports.registerStudent= async(req,res)=>{
             html
         };
         await sendEmail(mailOptions);
-        await user.save();
+        await student.save();
         res.status(201).json({
             message: 'new student created successfully',
-            data: user,
+            data: student,
             token
         })
 
     } catch (error) {
-        console.log(error.message);
+        console.log(error);
         res.status(500).json({
             message: 'Internal Server Error'
         })
@@ -56,7 +55,7 @@ exports.verifyStudentEmail = async(req,res)=>{
                 message: 'Token not found'
             })
         };
-        const decodedToken = await jwt.verify(token, process.env.JWT_SECRET);
+        const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
         const student = await studentModel.findById(decodedToken.studentId);
         if (!student) {
             return res.status(404).json({
@@ -90,7 +89,7 @@ exports.login = async(req,res)=>{
                 message: `User with email: ${email} does not exist`
             });
         }
-        const isCorrectPassword = await bcrypt.compare(password, studentExists.password);
+        const isCorrectPassword = bcrypt.compare(password, studentExists.password);
         if (isCorrectPassword === false) {
             return res.status(400).json({
                 message: "Incorrect Password"
@@ -101,7 +100,7 @@ exports.login = async(req,res)=>{
                 message: "User not verified, Please check your email to verify"
             });
         }
-        const token = await jwt.sign({ userId: studentExists._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
+        const token = jwt.sign({ userId: studentExists._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
         res.status(200).json({
             message: 'Login successful',
             data: studentExists,
