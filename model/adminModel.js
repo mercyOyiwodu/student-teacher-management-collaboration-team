@@ -26,14 +26,10 @@ const adminSchema = new mongoose.Schema({
         type: String,
         require: true,
 
-    },
-    isAdmin:{
-        type: boolean,
-        default: false
     }
 
-},{timestamps: true})
+},{timestamps: true});
 
-const adminModel= mongoose.model('students',adminSchema)
+const adminModel = mongoose.model('admins', adminSchema);
 
-module.exports = adminModel
+module.exports = adminModel;
