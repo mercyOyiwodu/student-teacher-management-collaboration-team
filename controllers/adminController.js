@@ -141,4 +141,105 @@ exports.getAllStudent = async (req, res) =>{
             message: 'internal server error'
         })
     }
+};
+
+exports.updateTeacher = async (req, res) =>{
+    try {
+        const {teacherId} = req.params
+        const {fullName, mentor, email} = req.body
+
+        const teacher = await teacherModel.findById(teacherId)
+        if (!teacher) {
+            return res.status(404).json({
+                message: 'Teacher not found'
+            })
+        }
+        const data = {
+            fullName,
+            mentor,
+            email
+        }
+        const updatedTeacher = await teacherModel.findByIdAndUpdate(teacherId, data, {new: true})        
+        res.status(200).json({
+            message: 'Teacher updated successfully',
+            data: updatedTeacher
+        })
+    } catch (error) {
+        console.log(error.message)
+        res.status(500).json({
+            message: 'internal server error'
+        })
+    }
+};
+exports.deleteTeacher = async (req, res) =>{
+    try {
+        const {teacherId} = req.params
+        const teacher = teacherModel.findById(teacherId)
+        if (!teacher) {
+            return res.status(404).json({
+                message: 'Teacher not found'
+            })
+        }
+        const deleteTeacher = await teacherModel.findByIdAndDelete(teacherId)
+        res.status(200).json({
+            message: 'Teacher deleted successfully',
+            data: deleteTeacher
+        })
+    } catch (error) {
+        console.log(error.message)        
+        res.status(500).json({
+            message: 'Internal server error'
+        })
+    }
+};
+
+exports.updateStudent = async (req, res) =>{
+    try {
+        const {studentId} = req.params
+        const {fullName,stack, email} = req.body
+        const student = await studentModel.findById(studentId)
+        if (!student) {
+            return res.status(404).json({
+                message: 'Studen not found'
+            })
+        } 
+
+        const data = {
+            fullName,
+            stack, 
+            email
+        }
+        const updateStudent = await studentModel.findByIdAndUpdate(studentId)
+        res.status(200).json({
+            message: 'Student updated successfully',
+            data: updateStudent
+        })
+    } catch (error) {
+        console.log(error.message)        
+        res.status(500).json({
+            message: 'internal server error'
+        })
+    }
+}
+
+exports.deleteStudent = async (req, res) =>{
+    try {
+        const {studentId} = req.params
+        const student = await studentModel.findById(teacherId)
+        if (!student) {
+            return res.status(404).json({
+                message: 'internal server error'
+            })
+        }
+        const deleteStudent = await studentModel.findByIdAndDelete(studentId)
+        res.status(200).json({
+            message: 'student deleted successfully',
+            data: deleteStudent
+        })
+    } catch (error) {
+        console.log(error.message)        
+        res.status(500).json({
+            message: 'internal server error'
+        })
+    }
 }
