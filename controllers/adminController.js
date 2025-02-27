@@ -1,4 +1,6 @@
 const adminModel = require("../model/adminModel");
+const teacherModel = require("../model/teacherModel");
+const studentModel = require("../model/studentModel");
 const jwt =require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const {signUpTemplate} = require('../utils/mailTemplate');
@@ -109,5 +111,34 @@ exports.adminLogin = async (req, res) => {
     } catch (error) {
         console.log(error)
         res.status(500).json({ message: 'Internal Server Error' });
+    }
+};
+
+exports.getAllTeacher =  async  (req, res) =>{
+    try {
+        const allTeacher = await teacherModel.find()
+        res.status(200).json({
+            message: 'kindly find all teachers below',
+            data: allTeacher
+        })
+    } catch (error) {
+        console.log(error.message)        
+        res.status(500).json({
+            message: 'internal server error'
+        })
+    }
+};
+exports.getAllStudent = async (req, res) =>{
+    try {
+        const allStudent = await studentModel.find()
+        res.status(200).json({
+            message: 'kindly find all students below',
+            data: allStudent
+        })
+    } catch (error) {
+        console.log(error.message)        
+        res.status(500).json({
+            message: 'internal server error'
+        })
     }
 }
