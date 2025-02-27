@@ -1,4 +1,4 @@
-const studentModel =require('../model/studentModel')
+const adminModel =require('../model/adminModel')
 const jwt = require('jsonwebtoken')
 
 
@@ -12,11 +12,23 @@ exports.authenticate = async(req,res,next) =>{
         }
         const token = auth.split(' ')[1]
         if(!token){
-            return res.status(404).json
+            return res.status(404).json({
+                message:'Authention Failed: token not found'
+            })
         }
+        const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+        const admin = await adminModel.findById(decodedToken.adminId);
+        if(!admin){
+            console.log('Admin not found');
+            return res.status(401).json({
+                message: 'Unauthorized: Only Admin can perform this action'
+            })
+        }
+        req.admin = decodedToken;
+        next()
     } catch (error) {
         console.log(error.message);
-        
+    
         if(error instanceof jwt.JsonWebTokenError){
             return res.status(400).json({
                 message: 'Session timeout: Please Login To Continue'

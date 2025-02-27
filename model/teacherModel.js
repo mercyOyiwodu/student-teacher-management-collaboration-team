@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const teacherSchema = new mongoose.Schema({
-    fullName: {
+    fullname: {
         type: String,
         require: true
     },
@@ -15,34 +15,24 @@ const teacherSchema = new mongoose.Schema({
         require: true,
         lowerCase: true
     },
-    passWord: {
+    password: {
         type: String,
         require: true
     },
     gender: {
         type: String,
-        enum: ['Male', 'Female'],
+        enum: ['male', 'female'],
         require: true
     },
     isVerified: {
         type: Boolean,
         default: false
     },
-    isTeacher: {
-        type: Boolean,
-        default: false
-    },
     mentor: {
-        types: String,
-        enum: ['Backend', 'Frontend', 'productDesign'],
+        type: String,
+        enum: ['backend', 'frontend', 'product_design'],
         require: 'true'
-    },
-    
-    studentId:[ {
-        type: mongoose.SchemaTypes.ObjectId,
-        ref: "students"
-    }]
-
+    }
 }, {timestamps: true});
 
 const teacherModel = mongoose.model('teachers', teacherSchema);
