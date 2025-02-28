@@ -133,25 +133,5 @@ exports.getStudentPersonalInfo = async(req, res) => {
             message: 'Error getting student'
         });
     }
-}
+};
     
-exports.getStudentPersonalInfo = async(req, res) => {
-    try {
-        const { studentId } = req.student;
-        const student = await studentModel.findById(studentId);
-        if (!student) {
-            return res.status(404).json({
-                message: 'Student not found'
-            });
-        }
-        res.status(200).json({
-            message: 'Student found',
-            data: student
-        });
-    } catch (error) {
-        console.log(error.message);
-        res.status(500).json({
-            message: 'Error getting student'
-        });
-    }
-}
