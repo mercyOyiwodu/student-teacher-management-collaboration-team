@@ -10,7 +10,7 @@ exports.registerStudent= async(req,res)=>{
         const emailExist = await studentModel.findOne({ email: email.toLowerCase() });
         if (emailExist) {
             return res.status(480).json({
-                message: `Username has already been taken`
+                message: `email has already been taken`
             })
         };
         const salt = await bcrypt.genSalt(10);
@@ -138,26 +138,6 @@ exports.getStudentPersonalInfo = async(req, res) => {
 exports.getStudentPersonalInfo = async(req, res) => {
     try {
         const { studentId } = req.student;
-        const student = await studentModel.findById(studentId);
-        if (!student) {
-            return res.status(404).json({
-                message: 'Student not found'
-            });
-        }
-        res.status(200).json({
-            message: 'Student found',
-            data: student
-        });
-    } catch (error) {
-        console.log(error.message);
-        res.status(500).json({
-            message: 'Error getting student'
-        });
-    }
-}
-exports.getStudentPersonalInfo = async(req, res) => {
-    try {
-        const { studentId } = req.params;
         const student = await studentModel.findById(studentId);
         if (!student) {
             return res.status(404).json({
