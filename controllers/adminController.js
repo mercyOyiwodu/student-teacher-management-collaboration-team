@@ -146,7 +146,7 @@ exports.getAllStudent = async (req, res) =>{
 exports.updateTeacher = async (req, res) =>{
     try {
         const {teacherId} = req.params
-        const {fullName, mentor, email} = req.body
+        const {fullname, mentor, email, username  } = req.body
 
         const teacher = await teacherModel.findById(teacherId)
         if (!teacher) {
@@ -155,9 +155,10 @@ exports.updateTeacher = async (req, res) =>{
             })
         }
         const data = {
-            fullName,
+            fullname,
             mentor,
-            email
+            email,
+            username
         }
         const updatedTeacher = await teacherModel.findByIdAndUpdate(teacherId, data, {new: true})        
         res.status(200).json({
@@ -181,6 +182,11 @@ exports.deleteTeacher = async (req, res) =>{
             })
         }
         const deleteTeacher = await teacherModel.findByIdAndDelete(teacherId)
+        if(!deleteTeacher){
+            return res.status(404).json({
+                message: 'Teacher has already been deleted'
+            })
+        }
         res.status(200).json({
             message: 'Teacher deleted successfully',
             data: deleteTeacher
@@ -196,20 +202,20 @@ exports.deleteTeacher = async (req, res) =>{
 exports.updateStudent = async (req, res) =>{
     try {
         const {studentId} = req.params
-        const {fullName,stack, email} = req.body
+        const {fullname,stack, email} = req.body
         const student = await studentModel.findById(studentId)
         if (!student) {
             return res.status(404).json({
-                message: 'Studen not found'
+                message: 'Student not found'
             })
         } 
 
         const data = {
-            fullName,
+            fullname,
             stack, 
             email
         }
-        const updateStudent = await studentModel.findByIdAndUpdate(studentId)
+        const updateStudent = await studentModel.findByIdAndUpdate(studentId, data, {new: true})
         res.status(200).json({
             message: 'Student updated successfully',
             data: updateStudent
@@ -225,13 +231,19 @@ exports.updateStudent = async (req, res) =>{
 exports.deleteStudent = async (req, res) =>{
     try {
         const {studentId} = req.params
-        const student = await studentModel.findById(teacherId)
+        const student = await studentModel.findById(studentId)
+        
         if (!student) {
             return res.status(404).json({
-                message: 'internal server error'
+                message: 'student not found'
             })
         }
         const deleteStudent = await studentModel.findByIdAndDelete(studentId)
+        if(!deleteStudent){
+            return res.status(404).json({
+                message: 'Student has already been deleted'
+            })
+        }
         res.status(200).json({
             message: 'student deleted successfully',
             data: deleteStudent
